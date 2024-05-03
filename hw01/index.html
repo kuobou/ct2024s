@@ -16,6 +16,7 @@
 <title>作品集 Portfolio</title>
 <!-- https://alexlenail.me/NN-SVG/about.html -->
 <link rel="icon" href="../hw00/favicon.svg"/>
+
 <style type="text/css">
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200&display=swap');
 
@@ -40,6 +41,7 @@
       width: 120px;
       height: 20px;
       -webkit-appearance: initial;
+      appearance: initial;
       border-radius: 3px;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       outline:none;
@@ -178,15 +180,36 @@
   <!-- ------------------------------------------------>
   <div class="row hw12">
     <div class="col-md-12 twenty">
-      該次作業程式碼，請放在 https://github.com/<span style="color:red;">你的帳號</span>/ct2024s/hw<span style="color:red;">01</span>/src/ 檔案夾。
+      打開作品集資料夾 (GitHub 倉庫 vis2023f 傳送門) 
+      <hr>
+      <input type="button" name="back" onclick="location.href='https://github.com/night2021-2021/vis2023f/tree/main/hw01'" value="  ٩(｡・ω・｡)و     "> 
+    </div>
+</div>
+
+  <!-- ------------------------------------------------>
+
+  <div class="row hw12">
+    <div class="col-md-12 twenty">
+      <h4>前往 Repo 網頁</h4>
     </div>
   </div>
-
   <!-- ------------------------------------------------>
   <div class="row hw12">
     <div class="col-md-12 twenty">
-      心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。
+      <a href="https://github.com/night2021-2021/vis2023f/tree/main/hw01/src-easy">Easy Baseline </a>
+      <hr>
+      <a href="https://github.com/night2021-2021/vis2023f/tree/main/hw01/src-medium-3">Medium Baseline(V3) </a>   
+      <hr>
+      <a href="https://github.com/night2021-2021/vis2023f/tree/main/hw01/src-medium-7">Medium Baseline(V7) </a>
+      <hr>
+      <a href="https://observablehq.com/embed/e6ea604a75c566b2@490?cell=*&api_key=f330ac3db5b0a900b196546d75b19baa15582cd3">Strong Baseline </a>
     </div>
+  </div>
+  <!-- ------------------------------------------------>
+  <div class="row hw12">
+    <div class="col-md-12 twenty">
+      這是這堂課的第一份作業，我覺得十分有趣，以前的我還不知道原來JS可以做這麼多事情。實在是令我大開眼界，也讓我對這堂課感到更加期待。同時，這堂課的第一個strong baseline也讓我感到十分有挑戰性，我想我會盡力完成它，並且最後也有完成，但我對這次做一有個小建議，希望可以把作業要用的ppt更新一下，不然我照著上面寫完，之後去參觀一下別人的作品時才發現，與我所想的大相逕庭，花了我不少時間做更改
+       </div>
   </div>
 
   <!-- ------------------------------------------------>
@@ -200,37 +223,90 @@
           <th>分項描述</th>
         </tr>
         <tr>
-          <td rowspan="7" id="myTotal"></td>
-          <td><input type="checkbox" class="flipswitch" id="myCheckbox1"></td>
+          <td rowspan="4" id="myTotal"></td>
+          <td><input type="checkbox" class="flipswitch" id="myCheckbox1" checked = "checked"></td>
           <td id='m1'>2</td>
-          <td>Simple baseline - 描述、描述、描述</td>
+          <td>Simple baseline - 產生 Dummy CSV 虛構成績表</td>
         </tr>
         <tr>
-          <td><input type="checkbox" class="flipswitch" id="myCheckbox2" checked></td>
-          <td id='m2'>6</td>
-          <td>Medium baseline - 描述、描述、描述 </td>
+          <td><input type="checkbox" class="flipswitch" id="myCheckbox2" checked = "checked"></td>
+          <td id='m2'>3</td>
+          <td>Simple baseline - 繪製 v3 蘋果成績表</td>
         </tr>
         <tr>
-          <td><input type="checkbox" class="flipswitch" id="myCheckbox3"></td>
-          <td id='m3'>2</td>
-          <td>Strong baseline - 描述、描述、描述 </td>
+          <td><input type="checkbox" class="flipswitch" id="myCheckbox3" checked = "checked"></td>
+          <td id='m3'>3</td>
+          <td>Medium baseline - 繪製 v7 蘋果成績表</td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" class="flipswitch" id="myCheckbox4" checked = "checked"></td>
+          <td id='m4'>2</td>
+          <td>Strong baseline - 繪製 v7 創新成績表，參考D3畫廊，修改範例，推出創新成績表</td>
         </tr>
       </table>
+    </div>
+  </div>  
+
+  <!-- ------------------------------------------------>
+  <div class="row hw12">
+    <div class="col-md-12 twenty">
+      <h4>Simple baseline - 產生 Dummy CSV 虛構成績表</h4>
     </div>
   </div>
 
   <!-- ------------------------------------------------>
   <div class="row hw12">
     <div class="col-md-12 twenty">
-      <video id="video1" style="width:100%;max-width:100%;" controls="">
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-      </video>
+      <iframe height="250" width="100%" style=" background-color: #fff;" src = "src-easy/index.html"></iframe>
     </div>
   </div>
 
   <!-- ------------------------------------------------>
+  <div class="row hw12">
+    <div class="col-md-12 twenty">
+      <h4>Medium baseline - 繪製 v3 蘋果成績表</h4>
+    </div>
+  </div>
+  
+  <!-- ------------------------------------------------>
+  <div class="row hw12">
+    <div class="col-md-12 twenty">
+      <iframe height="250" width="100%" style=" background-color: #fff;" src = "src-medium-3/index.html"></iframe>
+    </div>
+  </div>
 
   <!-- ------------------------------------------------>
+  <div class="row hw12">
+    <div class="col-md-12 twenty">
+      <h4>Medium baseline - 繪製 v7 蘋果成績表</h4>
+    </div>
+  </div>
+
+  <!-- ------------------------------------------------>
+  <div class="row hw12">
+    <div class="col-md-12 twenty">
+      <iframe height="250" width="100%" style=" background-color: #fff;" src = "src-medium-7/index.html"></iframe>
+    </div>
+  </div>
+
+  <!-- ------------------------------------------------>
+  <div class="row hw12">
+    <div class="col-md-12 twenty">
+      <h4>Strong baseline - 繪製 v7 創新成績表，參考D3畫廊，修改範例，推出創新成績表</h4>
+    </div>
+  </div>
+
+  <!-- ------------------------------------------------>
+  <div class="row hw12">
+    <div class="col-md-12 twenty">
+      <iframe width="100%" height="500" frameborder="0" style="background-color: #FFFFFF"
+  src="https://observablehq.com/embed/e6ea604a75c566b2@490?cell=*&api_key=f330ac3db5b0a900b196546d75b19baa15582cd3"></iframe>
+ 
+    </div>
+  </div>
+
+  <!-- ------------------------------------------------>
+  
 
 
 <script>
@@ -265,6 +341,10 @@
 
     if (d3.select("#myCheckbox3").property("checked")){
       score += parseInt(d3.select('#m3').html());   
+    }
+
+    if (d3.select("#myCheckbox4").property("checked")){
+      score += parseInt(d3.select('#m4').html());   
     }
 
     d3.select("#myTotal").html(score);    
