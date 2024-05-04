@@ -234,8 +234,10 @@
   </div>
 
   <!-- ------------------------------------------------>
-  <div class="row hw12" align="center">
-    <iframe style="background-color: #fff;" src="hover.html" width="800" height="600" frameborder="0"></iframe>
+  <div class="row hw12">
+    <div class="col-md-12 twenty" align="center">
+      <canvas id="hover-canvas" height="600" width="900"></canvas>
+    </div>
   </div>
   <!-- ------------------------------------------------>
 
@@ -276,7 +278,147 @@
 
     d3.select("#myTotal").html(score);    
   }
+
+  const canvas = document.getElementById('hover-canvas');
+  const context = canvas.getContext('2d');
+  const graphX = 170;
+  const graphY = 50;
+  const graphWidth = 680;
+  const graphHeight = 480;
+  const graphDotRadius = 4;
+  const graphXDelta = 0.02;
+  const graphYDelta = 0.02;
+  let transformedData = [];
+  let currentHoverData = null;
+
+  function parseRawData(rawData) {
+    const data = d3.csv.parse(rawData);
+    return data.map(data => {
+      return {
+        student: data.Student.trim().slice(0, -4),
+        lpips: parseFloat(data.LPIPS),
+        ssim: parseFloat(data.SSIM),
+      };
+    });
+  }
+  function transformDataToCanvasPos(datas, { xMin, xMax, yMin, yMax }) {
+    return datas.map(data => {
+      return {
+        student: data.student,
+        x: graphX + (data.ssim - xMin) / (xMax - xMin) * graphWidth,
+        y: graphY + graphHeight - (data.lpips - yMin) / (yMax - yMin) * graphHeight,
+      };
+    });
+  }
+
+  function distance({ x1, y1 }, { x2, y2 }) {
+    return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
+  }
+
+  function drawGraph(context, data, { xMin, xMax, yMin, yMax, xGrid, yGrid }) {
+    context.fillStyle = 'rgb(255, 255, 255)';
+    context.fillRect(120, 0, canvas.width - 120, canvas.height);
+    
+    context.beginPath();
+    context.lineWidth = 1;
+    context.strokeStyle = 'rgb(0, 0, 0)';
+    context.fillStyle = 'rgb(0, 0, 0)';
+    context.font = '12px sans-serif';
+    context.moveTo(graphX, graphY);
+    context.lineTo(graphX, graphY + graphHeight);
+    context.lineTo(graphX + graphWidth, graphY + graphHeight);
+    for (let i = 0; i < xGrid; i++) {
+      context.moveTo(graphX + i * graphWidth / xGrid, graphY + graphHeight);
+      context.lineTo(graphX + i * graphWidth / xGrid, graphY + graphHeight + 5);
+      context.fillText((xMin + i * graphXDelta).toFixed(2), graphX + i * graphWidth / xGrid - 10, graphY + graphHeight + 15);
+    }
+    for (let i = 0; i < yGrid; i++) {
+      context.moveTo(graphX, graphY + i * graphHeight / yGrid);
+      context.lineTo(graphX - 5, graphY + i * graphHeight / yGrid);
+      context.fillText((yMax - i * graphYDelta).toFixed(2), graphX - 30, graphY + i * graphHeight / yGrid + 5);
+    }
+    context.stroke();
+
+    context.fillText('SSIM', 480, 570);
+    context.save();
+    context.translate(130, 300);
+    context.rotate(-Math.PI / 2);
+    context.fillText('LPIPS', 0, 0);
+    context.restore();
+
+    for (let i = 0; i < transformedData.length; i++) {
+      context.beginPath();
+      context.arc(transformedData[i].x, transformedData[i].y, graphDotRadius, 0, 2 * Math.PI);
+      context.fillStyle = 'rgb(32, 32, 32)';
+      context.fill();
+    }
+  }
+
+  function drawHoverCanvas(rawData) {
+    console.log(rawData);
+
+    const data = parseRawData(rawData);
+
+    const xMin = Math.floor(data.reduce((min, d) => Math.min(min, d.ssim), 1) / graphXDelta) * graphXDelta - graphXDelta;
+    const xMax = Math.ceil(data.reduce((max, d) => Math.max(max, d.ssim), 0) / graphXDelta) * graphXDelta + graphXDelta;
+    const yMin = Math.floor(data.reduce((min, d) => Math.min(min, d.lpips), 1) / graphYDelta) * graphYDelta - graphYDelta;
+    const yMax = Math.ceil(data.reduce((max, d) => Math.max(max, d.lpips), 0) / graphYDelta) * graphYDelta + graphYDelta;
+    const xGrid = (xMax - xMin) / graphXDelta;
+    const yGrid = (yMax - yMin) / graphYDelta;
+
+    transformedData = transformDataToCanvasPos(data, { xMin, xMax, yMin, yMax });
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = 'rgb(255, 255, 255)';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    
+    const self_image = new Image();
+    self_image.src = 'word/109820011.png';
+    self_image.onload = function() {
+      context.drawImage(self_image, 20, 480, 100, 100);
+    };
+
+    drawGraph(context, data, { xMin, xMax, yMin, yMax, xGrid, yGrid });
+
+    canvas.addEventListener('mousemove', function(event) {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const hoverData = transformedData.find(data => distance({ x1: data.x, y1: data.y }, { x2: x, y2: y }) < graphDotRadius);
+      if (!hoverData && currentHoverData) {
+        currentHoverData = null;
+        
+        drawGraph(context, data, { xMin, xMax, yMin, yMax, xGrid, yGrid });
+      } else if (hoverData) {
+        currentHoverData = hoverData;
+
+        const hover_image = new Image();
+        hover_image.src = `word/${hoverData.student}.png`;
+        hover_image.onload = function() {
+          drawGraph(context, data, { xMin, xMax, yMin, yMax, xGrid, yGrid });
+          context.globalAlpha = 0.8;
+          context.fillText(hoverData.student, x + 10, y - 30);
+          context.drawImage(hover_image, x, y - 25, 100, 100);
+          context.globalAlpha = 1;
+        };
+      }
+    });
+  }
+
+  const rawData = `Student,LPIPS,SSIM
+                  109820011.jpg,0.402337551,0.779675511
+                  110820043.jpg,0.54836446,0.738193862
+                  110820054.jpg,0.559921801,0.769919685
+                  110820014.jpg,0.573643923,0.726171627
+                  109820017.jpg,0.60124892,0.72750417
+                  110820032.jpg,0.614297807,0.674448523
+                  110820001.jpg,0.621731579,0.733590452
+                  110820052.jpg,0.692746103,0.657473665`;
+
+  drawHoverCanvas(rawData);
+
 </script>
 
 </body>
 </html>
+
